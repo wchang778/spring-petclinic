@@ -41,4 +41,5 @@ class VetTests {
 	void testSomething() {
 		assertThat("hi").isEqualTo("hi");
 	}
+
 }
