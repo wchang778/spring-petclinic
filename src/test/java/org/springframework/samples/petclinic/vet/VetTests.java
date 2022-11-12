@@ -37,4 +37,8 @@ class VetTests {
 		assertThat(other.getId()).isEqualTo(vet.getId());
 	}
 
+	@Test
+	void testSomething() {
+		assertThat("hi").isEqualTo("hi");
+	}
 }
