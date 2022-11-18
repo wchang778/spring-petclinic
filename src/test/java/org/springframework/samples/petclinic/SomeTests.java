@@ -8,6 +8,7 @@ public class SomeTests {
 	@Test
 	public void testMe() {
 		assertThat(1).isEqualTo(1);
+		assertThat(2).isEqualTo(2);
 	}
 
 }
