@@ -9,7 +9,7 @@ public class SomeTests {
 	public void testMe() {
 		assertThat(1).isEqualTo(1);
 		assertThat(2).isEqualTo(2);
-		assertThat(3).isEqualTo(4);
+		assertThat(3).isEqualTo(3);
 	}
 
 }
