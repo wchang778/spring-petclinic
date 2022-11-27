@@ -15,4 +15,9 @@ public class SomeTests {
 		assertThat(3).isEqualTo(3);
 	}
 
+	@Test
+	public void testThat() {
+		assertThat(3).isEqualTo(3);
+	}
+
 }
