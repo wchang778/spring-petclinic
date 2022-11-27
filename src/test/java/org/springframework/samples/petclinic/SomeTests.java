@@ -14,4 +14,5 @@ public class SomeTests {
 	public void testThis() {
 		assertThat(3).isEqualTo(4);
 	}
+
 }
