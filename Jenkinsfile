@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        APP_NAME = 'Spring-PetClinic'
+    }
+
     triggers {
         cron('H/5 * * * *')
     }
@@ -13,11 +17,11 @@ pipeline {
             }
         }
         
-        stage('Build') {
+        stage('Test') {
             steps {
 
                 // Run Maven on a Unix agent.
-                sh "./mvnw clean package"
+                sh "./mvnw clean test"
 
                 // To run Maven on a Windows agent, use
                 // bat "mvn -Dmaven.test.failure.ignore=true clean package"
@@ -30,13 +34,24 @@ pipeline {
                     junit '**/target/surefire-reports/TEST-*.xml'
                     archiveArtifacts 'target/*.jar'
                 }
+
                 failure {
                     junit '**/target/surefire-reports/TEST-*.xml'
+                }
+
+                always {
+                    emailext 
+                        subject: "${APP_NAME} [proj='${env.PROJECT_NAME}' job='${env.JOB_NAME} build=${env.BUILD_NUMBER} status=${env.BUILD_STATUS}]'",
+                        body: """
+                        <h3>hi</h3>: Job=${env.JOB_NAME}, Build=${env.BUILD_NUMBER}
+
+                        """,
+                        to: 'test@mailhog.com'
                 }
             }
         }
 
-        stage('Test') {
+        stage('Build') {
             steps {
                 echo 'Testing ....'
             }
