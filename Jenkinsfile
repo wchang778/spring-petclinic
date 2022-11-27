@@ -40,8 +40,7 @@ pipeline {
                 }
 
                 always {
-                    emailext 
-                        subject: "${APP_NAME} [proj='${env.PROJECT_NAME}' job='${env.JOB_NAME} build=${env.BUILD_NUMBER} status=${env.BUILD_STATUS}]'",
+                    emailext subject: "${APP_NAME} [proj=${env.PROJECT_NAME} job=${env.JOB_NAME} build=${env.BUILD_NUMBER} status=${env.BUILD_STATUS}]",
                         body: """
                         <h3>hi</h3>: Job=${env.JOB_NAME}, Build=${env.BUILD_NUMBER}
 
@@ -53,7 +52,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Testing ....'
+                echo 'Building ....'
             }
         }
     }
