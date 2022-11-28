@@ -40,12 +40,24 @@ pipeline {
                 }
 
                 always {
-                    emailext subject: "${APP_NAME} [proj=${env.PROJECT_NAME} job=${env.JOB_NAME} build=${env.BUILD_NUMBER} status=${env.BUILD_STATUS}]",
+                    emailext (
+                        subject: "${APP_NAME} [proj=${PROJECT_NAME}, branch=${BRANCH_NAME}, job=${JOB_NAME}, build=${BUILD_NUMBER}, status=${BUILD_STATUS}]",
                         body: """
-                        <h3>hi</h3>: Job=${env.JOB_NAME}, Build=${env.BUILD_NUMBER}
+                        <h3>${APP_NAME}</h3> 
+                        <p>
+                        proj=${PROJECT_NAME}, branch=${BRANCH_NAME}, job=${JOB_NAME}, build=${BUILD_NUMBER}, status=${BUILD_STATUS}
+                        </p>
 
+                        <p>
+                        job_url=${JOB_DISPLAY_URL}
+                        </p>
+
+                        <p>
+                        run_url=${RUN_DISPLAY_URL}
+                        </p>
                         """,
                         to: 'test@mailhog.com'
+                    )
                 }
             }
         }
