@@ -36,7 +36,6 @@ pipeline {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 always {
-                    echo "${currentBuild.projectName}"
                     junit '**/target/surefire-reports/TEST-*.xml'
                     archiveArtifacts 'target/*.jar'
 
@@ -46,7 +45,7 @@ pipeline {
                             compressLog: true,
                             recipientProviders: [culprits(), requestor(), developers()],
                             to: "test@jenkins",
-                            subject: "Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] need attention [${currentBuild.projectName}]"
+                            subject: "Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] Result [${currentBuild.currentResult}]"
                     )
                 }
             }
