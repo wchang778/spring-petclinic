@@ -45,7 +45,7 @@ pipeline {
                             compressLog: true,
                             recipientProviders: [culprits(), requestor(), developers()],
                             to: 'test@jenkins',
-                            subject: 'Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] Status [${currentBuild.result}]'
+                            subject: 'Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] need attention'
                     )
                 }
             }
