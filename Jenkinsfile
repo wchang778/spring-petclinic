@@ -44,6 +44,7 @@ pipeline {
                         body: 'Please go to ${BUILD_URL} and verify the build',
                         compressLog: true,
                         recipientProviders: [culprits(), requestor(), developers()],
+                        to: 'test@jenkins',
                         subject: 'Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] need attention'
                 )
             }
