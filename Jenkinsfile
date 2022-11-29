@@ -40,12 +40,14 @@ pipeline {
                 }
 
                 always {
+                    def scmVars = checkout scm
+
                     emailext (
                         subject: "${APP_NAME} [proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}]",
                         body: """
                         <h3>${APP_NAME}</h3> 
                         <p>
-                        proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}
+                        proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}, commit=${scmVars.GIT_COMMIT}
                         </p>
 
                         <p>
