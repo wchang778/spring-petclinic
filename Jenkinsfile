@@ -36,9 +36,11 @@ pipeline {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
                 always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.jar'
+//                    junit '**/target/surefire-reports/TEST-*.xml'
+//                    archiveArtifacts 'target/*.jar'
+                }
 
+                changed {
                     emailext(
                             attachLog: true,
                             body: "Please go to ${BUILD_URL} and verify the build.",
