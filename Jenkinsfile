@@ -1,3 +1,6 @@
+def scmVars = checkout scm
+GIT_COMMIT_HASH = scmVars.GIT_COMMIT
+
 pipeline {
     agent any
 
@@ -40,7 +43,6 @@ pipeline {
                 }
 
                 always {
-                    def scmVars = checkout scm
 
                     emailext (
                         subject: "${APP_NAME} [proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}]",
