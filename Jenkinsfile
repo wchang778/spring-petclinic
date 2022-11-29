@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -19,32 +18,32 @@ pipeline {
                 env.GIT_COMMIT_HASH = scmVars.GIT_COMMIT
             }
         }
-        
+
         stage('Test')
 
-            steps {
+        steps {
 
-                // Run Maven on a Unix agent.
-                sh "./mvnw clean test"
+            // Run Maven on a Unix agent.
+            sh "./mvnw clean test"
 
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            // To run Maven on a Windows agent, use
+            // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+        }
+
+        post {
+            // If Maven was able to run the tests, even if some of the test
+            // failed, record the test results and archive the jar file.
+            success {
+                junit '**/target/surefire-reports/TEST-*.xml'
+                // archiveArtifacts 'target/*.jar'
             }
 
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    // archiveArtifacts 'target/*.jar'
-                }
+            failure {
+                junit '**/target/surefire-reports/TEST-*.xml'
+            }
 
-                failure {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-
-                always {
-                    emailext (
+            always {
+                emailext(
                         subject: "${APP_NAME} [proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}]",
                         body: """
                         <h3>${APP_NAME}</h3> 
@@ -61,15 +60,15 @@ pipeline {
                         </p>
                         """,
                         to: 'test@mailhog.com'
-                    )
-                }
-            }
-        }
-
-        stage('Build') {
-            steps {
-                echo 'Building ....'
+                )
             }
         }
     }
+
+    stage('Build') {
+        steps {
+            echo 'Building ....'
+        }
+    }
 }
+
