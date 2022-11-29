@@ -1,5 +1,3 @@
-def scmVars = checkout scm
-GIT_COMMIT_HASH = scmVars.GIT_COMMIT
 
 pipeline {
     agent any
@@ -16,11 +14,14 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Get some code from a GitHub repository
-                git branch: 'main', url: 'https://github.com/wchang778/spring-petclinic.git/'
+                scmVars = git branch: 'main', url: 'https://github.com/wchang778/spring-petclinic.git/'
+                commitHash = scmVars.GIT_COMMIT
+                env.GIT_COMMIT_HASH = scmVars.GIT_COMMIT
             }
         }
         
-        stage('Test') {
+        stage('Test')
+
             steps {
 
                 // Run Maven on a Unix agent.
@@ -43,13 +44,12 @@ pipeline {
                 }
 
                 always {
-
                     emailext (
                         subject: "${APP_NAME} [proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}]",
                         body: """
                         <h3>${APP_NAME}</h3> 
                         <p>
-                        proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}, commit=${scmVars.GIT_COMMIT}
+                        proj=${env.PROJECT_NAME}, branch=${env.BRANCH_NAME}, job=${env.JOB_NAME}, build=${env.BUILD_NUMBER}, status=${env.BUILD_STATUS}, commit=${env.GIT_COMMIT_HASH}
                         </p>
 
                         <p>
