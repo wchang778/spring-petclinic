@@ -12,12 +12,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                step {
-                    // Get some code from a GitHub repository
-                    git branch: 'main', url: 'https://github.com/wchang778/spring-petclinic.git/'
+                // Get some code from a GitHub repository
+                git branch: 'main', url: 'https://github.com/wchang778/spring-petclinic.git/'
 //                    commitHash = scmVars.GIT_COMMIT
 //                    env.GIT_COMMIT_HASH = scmVars.GIT_COMMIT
-                }
             }
         }
 
