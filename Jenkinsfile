@@ -54,12 +54,14 @@ pipeline {
                 }
             }
         }
-    }
 
-    stage('Build') {
-        steps {
-            echo 'Building ....'
+
+        stage('Build') {
+            steps {
+                echo 'Building ....'
+            }
         }
     }
+
 }
 
