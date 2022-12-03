@@ -3,7 +3,7 @@ pipeline {
 
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '5', artifactNumToKeepStr: '20',
-            daysToKeepStr: '5', numToKeepStr: '20')
+                daysToKeepStr: '5', numToKeepStr: '20')
     }
 
     environment {
@@ -35,35 +35,36 @@ pipeline {
                 // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
 
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
 
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-
-                success {
-                    archiveArtifacts 'target/*.jar'
-                }
-
-                changed {
-                    emailext(
-                            attachLog: true,
-                            body: "Please go to ${BUILD_URL} and verify the build.",
-                            compressLog: true,
-                            recipientProviders: [culprits(), requestor(), developers()],
-                            to: "test@jenkins",
-                            subject: "Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] Result [${currentBuild.currentResult}]"
-                    )
-                }
-            }
         }
-
 
         stage('Build') {
             steps {
                 echo 'Building ....'
+            }
+        }
+
+        post {
+            // If Maven was able to run the tests, even if some of the test
+            // failed, record the test results and archive the jar file.
+
+            always {
+                junit '**/target/surefire-reports/TEST-*.xml'
+            }
+
+            success {
+                archiveArtifacts 'target/*.jar'
+            }
+
+            changed {
+                emailext(
+                        attachLog: true,
+                        body: "Please go to ${BUILD_URL} and verify the build.",
+                        compressLog: true,
+                        recipientProviders: [culprits(), requestor(), developers()],
+                        to: "test@jenkins",
+                        subject: "Job [${JOB_NAME}] Build# [${BUILD_NUMBER}] Result [${currentBuild.currentResult}]"
+                )
             }
         }
     }
