@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '20'))
+        buildDiscarder logRotator(artifactDaysToKeepStr: '5', artifactNumToKeepStr: '20',
+            daysToKeepStr: '5', numToKeepStr: '20')
     }
 
     environment {
