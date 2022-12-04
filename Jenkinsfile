@@ -1,5 +1,3 @@
-println GroovySystem.version
-
 pipeline {
     agent any
 
